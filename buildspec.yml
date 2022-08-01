@@ -8,4 +8,4 @@ phases:
       - yarn install
   build:
     commands:
-      - cdk deploy '*' -c environment=dev --require-approval never
+      - npx cdk deploy '*' -c environment=dev --require-approval never
