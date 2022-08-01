@@ -2,19 +2,19 @@ import * as path from 'path';
 
 import { Stack, StackProps, RemovalPolicy } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { aws_apigateway as apigateway } from 'aws-cdk-lib';
-import { aws_lambda as lambda } from 'aws-cdk-lib';
-import { aws_lambda_nodejs as node_lambda } from 'aws-cdk-lib';
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as lambdaNodejs from 'aws-cdk-lib/aws-lambda-nodejs';
 
-export class LambdaBlueGreenDeployByCdkStack extends Stack {
+export class BlueGreenApiStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const lambdaFunction = new node_lambda.NodejsFunction(
+    const lambdaFunction = new lambdaNodejs.NodejsFunction(
       this,
-      'LambdaBlueGreenDeployByCdkFunction',
+      'LambdaFunction',
       {
-        functionName: 'LambdaBlueGreenDeployByCdkFunction',
+        functionName: 'blue-green-sample-function',
         description: `Generated on: ${new Date().toISOString()}`,
         runtime: lambda.Runtime.NODEJS_14_X,
         entry: path.join(__dirname, '../src/lambda/index.ts'),
@@ -27,7 +27,7 @@ export class LambdaBlueGreenDeployByCdkStack extends Stack {
     const lambdaAlias = lambdaFunction.currentVersion.addAlias('alias');
 
     const restApi = new apigateway.RestApi(this, 'RestApi', {
-      restApiName: 'LambdaBlueGreenDeployByCdkFunctionApi',
+      restApiName: 'blue-green-sample-api',
     });
     restApi.root.addMethod(
       'GET',
