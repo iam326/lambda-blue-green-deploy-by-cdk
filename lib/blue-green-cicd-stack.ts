@@ -42,14 +42,37 @@ export class BlueGreenCicdStack extends Stack {
           statements: [
             new iam.PolicyStatement({
               effect: iam.Effect.ALLOW,
-              actions: [
-                // 'lambda:GetFunction',
-                // 'lambda:GetFunctionConfiguration',
-                // 'lambda:UpdateFunctionCode',
-                // 'lambda:UpdateFunctionConfiguration',
-                'lambda:PublishVersion',
-                'lambda:UpdateAlias',
+              actions: ['cloudformation:*'],
+              resources: [
+                `arn:aws:cloudformation:${this.region}:${this.account}:stack/*`,
               ],
+            }),
+            new iam.PolicyStatement({
+              effect: iam.Effect.ALLOW,
+              actions: ['ssm:GetParameter'],
+              resources: [
+                `arn:aws:ssm:${this.region}:${this.account}:parameter/cdk-bootstrap/*`,
+              ],
+            }),
+            new iam.PolicyStatement({
+              effect: iam.Effect.ALLOW,
+              actions: ['s3:*'],
+              resources: [
+                `arn:aws:s3:::cdk-*-assets-${this.account}-${this.region}`,
+                `arn:aws:s3:::cdk-*-assets-${this.account}-${this.region}/*`,
+                // 'arn:aws:s3:::cdktoolkit-stagingbucket-*',
+              ],
+            }),
+            new iam.PolicyStatement({
+              effect: iam.Effect.ALLOW,
+              actions: ['iam:PassRole'],
+              resources: [
+                `arn:aws:iam::${this.account}:role/cdk-*-role-${this.account}-${this.region}`,
+              ],
+            }),
+            new iam.PolicyStatement({
+              effect: iam.Effect.ALLOW,
+              actions: ['lambda:*'],
               resources: [
                 `arn:aws:lambda:${this.region}:${this.account}:function:blue-green-sample-function`,
               ],
@@ -67,8 +90,9 @@ export class BlueGreenCicdStack extends Stack {
         buildSpec: codeBuild.BuildSpec.fromSourceFilename('./buildspec.yml'),
         role: codeBuildServiceRole,
         environment: {
-          buildImage: codeBuild.LinuxBuildImage.AMAZON_LINUX_2_3,
+          buildImage: codeBuild.LinuxBuildImage.STANDARD_5_0,
           computeType: codeBuild.ComputeType.SMALL,
+          privileged: true,
         },
       }
     );
