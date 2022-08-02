@@ -8,4 +8,4 @@ phases:
       - yarn install
   build:
     commands:
-      - yarn deploy blue-green-api-stack -c environment=dev --require-approval never
+      - yarn deploy blue-green-lambda-stack -c environment=dev --require-approval never
