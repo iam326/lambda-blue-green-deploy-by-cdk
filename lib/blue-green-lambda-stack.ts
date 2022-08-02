@@ -5,10 +5,14 @@ import { Construct } from 'constructs';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as lambdaNodejs from 'aws-cdk-lib/aws-lambda-nodejs';
 
+interface BlueGreenLambdaStackProps extends StackProps {
+  commitHash: string;
+}
+
 export class BlueGreenLambdaStack extends Stack {
   public lambdaAlias: lambda.Alias;
 
-  constructor(scope: Construct, id: string, props?: StackProps) {
+  constructor(scope: Construct, id: string, props: BlueGreenLambdaStackProps) {
     super(scope, id, props);
 
     const lambdaFunction = new lambdaNodejs.NodejsFunction(
@@ -16,7 +20,7 @@ export class BlueGreenLambdaStack extends Stack {
       'LambdaFunction',
       {
         functionName: 'blue-green-sample-function',
-        description: `Generated on: ${new Date().toISOString()}`,
+        description: `Commit Hash: ${props.commitHash}`,
         runtime: lambda.Runtime.NODEJS_14_X,
         entry: path.join(__dirname, '../src/lambda/index.ts'),
         handler: 'handler',

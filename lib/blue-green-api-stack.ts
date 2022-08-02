@@ -6,6 +6,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 interface BlueGreenApiStackProps extends StackProps {
   lambdaAlias: lambda.Alias;
 }
+
 export class BlueGreenApiStack extends Stack {
   constructor(scope: Construct, id: string, props: BlueGreenApiStackProps) {
     super(scope, id, props);

@@ -60,7 +60,7 @@ export class BlueGreenCicdStack extends Stack {
               resources: [
                 `arn:aws:s3:::cdk-*-assets-${this.account}-${this.region}`,
                 `arn:aws:s3:::cdk-*-assets-${this.account}-${this.region}/*`,
-                // 'arn:aws:s3:::cdktoolkit-stagingbucket-*',
+                'arn:aws:s3:::cdktoolkit-stagingbucket-*',
               ],
             }),
             new iam.PolicyStatement({

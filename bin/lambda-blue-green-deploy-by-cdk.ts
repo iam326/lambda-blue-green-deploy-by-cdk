@@ -6,7 +6,11 @@ import { BlueGreenApiStack } from '../lib/blue-green-api-stack';
 import { BlueGreenCicdStack } from '../lib/blue-green-cicd-stack';
 
 const app = new cdk.App();
-const lambda = new BlueGreenLambdaStack(app, 'blue-green-lambda-stack');
+const commitHash = app.node.tryGetContext('commitHash');
+
+const lambda = new BlueGreenLambdaStack(app, 'blue-green-lambda-stack', {
+  commitHash,
+});
 new BlueGreenApiStack(app, 'blue-green-api-stack', {
   lambdaAlias: lambda.lambdaAlias,
 });
