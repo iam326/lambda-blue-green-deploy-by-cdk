@@ -6,7 +6,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as lambdaNodejs from 'aws-cdk-lib/aws-lambda-nodejs';
 
 interface BlueGreenLambdaStackProps extends StackProps {
-  commitHash: string;
+  commitHash?: string;
 }
 
 export class BlueGreenLambdaStack extends Stack {
@@ -20,7 +20,7 @@ export class BlueGreenLambdaStack extends Stack {
       'LambdaFunction',
       {
         functionName: 'blue-green-sample-function',
-        description: `Commit Hash: ${props.commitHash}`,
+        description: props.commitHash ? `Commit Hash: ${props.commitHash}` : '',
         runtime: lambda.Runtime.NODEJS_14_X,
         entry: path.join(__dirname, '../src/lambda/index.ts'),
         handler: 'handler',
