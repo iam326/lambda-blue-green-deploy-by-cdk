@@ -6,9 +6,11 @@ import * as codePipelineActions from 'aws-cdk-lib/aws-codepipeline-actions';
 import * as iam from 'aws-cdk-lib/aws-iam';
 
 export interface BlueGreenCicdStackProps extends StackProps {
+  projectName: string;
+  stageName: string;
   githubOwnerName: string;
   githubRepositoryName: string;
-  branchName: string;
+  githubBranchName: string;
   codestarConnectionArn: string;
 }
 
@@ -17,9 +19,11 @@ export class BlueGreenCicdStack extends Stack {
     super(scope, id, props);
 
     const {
+      projectName,
+      stageName,
       githubOwnerName,
       githubRepositoryName,
-      branchName,
+      githubBranchName,
       codestarConnectionArn,
     } = props;
 
@@ -29,7 +33,7 @@ export class BlueGreenCicdStack extends Stack {
         actionName: 'source',
         owner: githubOwnerName,
         repo: githubRepositoryName,
-        branch: branchName,
+        branch: githubBranchName,
         connectionArn: codestarConnectionArn,
         output: sourceArtifact,
       });
@@ -74,7 +78,7 @@ export class BlueGreenCicdStack extends Stack {
               effect: iam.Effect.ALLOW,
               actions: ['lambda:*'],
               resources: [
-                `arn:aws:lambda:${this.region}:${this.account}:function:blue-green-sample-function`,
+                `arn:aws:lambda:${this.region}:${this.account}:function:${stageName}-${projectName}-function`,
               ],
             }),
           ],
@@ -86,13 +90,19 @@ export class BlueGreenCicdStack extends Stack {
       this,
       'CodeBuildDeployProject',
       {
-        projectName: `${githubRepositoryName}-deploy-project`,
+        projectName: `${stageName}-${projectName}-deploy-project`,
         buildSpec: codeBuild.BuildSpec.fromSourceFilename('./buildspec.yml'),
         role: codeBuildServiceRole,
         environment: {
           buildImage: codeBuild.LinuxBuildImage.STANDARD_5_0,
           computeType: codeBuild.ComputeType.SMALL,
           privileged: true,
+          environmentVariables: {
+            STAGE_NAME: {
+              type: codeBuild.BuildEnvironmentVariableType.PLAINTEXT,
+              value: stageName,
+            },
+          },
         },
       }
     );
@@ -104,7 +114,7 @@ export class BlueGreenCicdStack extends Stack {
     });
 
     new codePipeline.Pipeline(this, 'DeployPipeline', {
-      pipelineName: `${githubRepositoryName}-deploy-pipeline`,
+      pipelineName: `${stageName}-${projectName}-deploy-pipeline`,
       stages: [
         {
           stageName: 'source',
