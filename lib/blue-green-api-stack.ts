@@ -3,14 +3,18 @@ import { Construct } from 'constructs';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 
-interface BlueGreenApiStackProps extends StackProps {
+interface BlueGreenSampleApiStackProps extends StackProps {
   projectName: string;
   stageName: string;
   lambdaAlias: lambda.Alias;
 }
 
-export class BlueGreenApiStack extends Stack {
-  constructor(scope: Construct, id: string, props: BlueGreenApiStackProps) {
+export class BlueGreenSampleApiStack extends Stack {
+  constructor(
+    scope: Construct,
+    id: string,
+    props: BlueGreenSampleApiStackProps
+  ) {
     super(scope, id, props);
 
     const { projectName, stageName, lambdaAlias } = props;

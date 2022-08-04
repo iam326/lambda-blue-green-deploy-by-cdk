@@ -5,7 +5,7 @@ import * as codePipeline from 'aws-cdk-lib/aws-codepipeline';
 import * as codePipelineActions from 'aws-cdk-lib/aws-codepipeline-actions';
 import * as iam from 'aws-cdk-lib/aws-iam';
 
-export interface BlueGreenCicdStackProps extends StackProps {
+export interface BlueGreenSampleCicdStackProps extends StackProps {
   projectName: string;
   stageName: string;
   githubOwnerName: string;
@@ -14,8 +14,12 @@ export interface BlueGreenCicdStackProps extends StackProps {
   codestarConnectionArn: string;
 }
 
-export class BlueGreenCicdStack extends Stack {
-  constructor(scope: Construct, id: string, props: BlueGreenCicdStackProps) {
+export class BlueGreenSampleCicdStack extends Stack {
+  constructor(
+    scope: Construct,
+    id: string,
+    props: BlueGreenSampleCicdStackProps
+  ) {
     super(scope, id, props);
 
     const {
