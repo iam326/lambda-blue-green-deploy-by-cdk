@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
-import { BlueGreenLambdaStack } from '../lib/blue-green-lambda-stack';
-import { BlueGreenApiStack } from '../lib/blue-green-api-stack';
-import { BlueGreenCicdStack } from '../lib/blue-green-cicd-stack';
+import { BlueGreenSampleLambdaStack } from '../lib/blue-green-sample-lambda-stack';
+import { BlueGreenSampleApiStack } from '../lib/blue-green-sample-api-stack';
+import { BlueGreenSampleCicdStack } from '../lib/blue-green-sample-cicd-stack';
 
 interface Environment {
   projectName: string;
@@ -24,7 +24,7 @@ const commitHash = app.node.tryGetContext('commitHash');
 env.projectName = projectName;
 env.stageName = stageName;
 
-const lambdaStack = new BlueGreenLambdaStack(
+const lambdaStack = new BlueGreenSampleLambdaStack(
   app,
   `${stageName}-${projectName}-lambda`,
   {
@@ -32,11 +32,11 @@ const lambdaStack = new BlueGreenLambdaStack(
     commitHash,
   }
 );
-new BlueGreenApiStack(app, `${stageName}-${projectName}-api`, {
+new BlueGreenSampleApiStack(app, `${stageName}-${projectName}-api`, {
   ...env,
   lambdaAlias: lambdaStack.lambdaAlias,
 });
-new BlueGreenCicdStack(app, `${stageName}-${projectName}-cicd`, {
+new BlueGreenSampleCicdStack(app, `${stageName}-${projectName}-cicd`, {
   ...env,
   githubOwnerName,
   githubRepositoryName,
