@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
-import { BlueGreenSampleLambdaStack } from '../lib/blue-green-lambda-stack';
-import { BlueGreenSampleApiStack } from '../lib/blue-green-api-stack';
-import { BlueGreenSampleCicdStack } from '../lib/blue-green-cicd-stack';
+import { BlueGreenSampleLambdaStack } from '../lib/blue-green-sample-lambda-stack';
+import { BlueGreenSampleApiStack } from '../lib/blue-green-sample-api-stack';
+import { BlueGreenSampleCicdStack } from '../lib/blue-green-sample-cicd-stack';
 
 interface Environment {
   projectName: string;
