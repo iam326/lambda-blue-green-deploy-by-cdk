@@ -33,7 +33,8 @@ export class BlueGreenSampleLambdaStack extends Stack {
         entry: path.join(__dirname, '../src/lambda/index.ts'),
         handler: 'handler',
         currentVersionOptions: {
-          removalPolicy: RemovalPolicy.RETAIN,
+          removalPolicy:
+            stageName === 'dev' ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
         },
       }
     );
