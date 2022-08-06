@@ -5,22 +5,30 @@ import { Construct } from 'constructs';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as lambdaNodejs from 'aws-cdk-lib/aws-lambda-nodejs';
 
-interface BlueGreenLambdaStackProps extends StackProps {
+interface BlueGreenSampleLambdaStackProps extends StackProps {
+  projectName: string;
+  stageName: string;
   commitHash?: string;
 }
 
-export class BlueGreenLambdaStack extends Stack {
+export class BlueGreenSampleLambdaStack extends Stack {
   public lambdaAlias: lambda.Alias;
 
-  constructor(scope: Construct, id: string, props: BlueGreenLambdaStackProps) {
+  constructor(
+    scope: Construct,
+    id: string,
+    props: BlueGreenSampleLambdaStackProps
+  ) {
     super(scope, id, props);
+
+    const { projectName, stageName, commitHash } = props;
 
     const lambdaFunction = new lambdaNodejs.NodejsFunction(
       this,
       'LambdaFunction',
       {
-        functionName: 'blue-green-sample-function',
-        description: props.commitHash ? `Commit Hash: ${props.commitHash}` : '',
+        functionName: `${stageName}-${projectName}-function`,
+        description: commitHash ? `Commit Hash: ${commitHash}` : '',
         runtime: lambda.Runtime.NODEJS_14_X,
         entry: path.join(__dirname, '../src/lambda/index.ts'),
         handler: 'handler',

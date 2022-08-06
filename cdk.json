@@ -15,9 +15,16 @@
     ]
   },
   "context": {
+    "projectName": "blue-green-sample",
     "githubOwnerName": "iam326",
     "githubRepositoryName": "lambda-blue-green-deploy-by-cdk",
     "codestarConnectionArn": "",
+    "dev": {
+      "githubBranchName": "develop"
+    },
+    "prod": {
+      "githubBranchName": "main"
+    },
     "@aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId": true,
     "@aws-cdk/core:stackRelativeExports": true,
     "@aws-cdk/aws-rds:lowercaseDbIdentifier": true,
