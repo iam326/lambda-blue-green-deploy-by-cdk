@@ -22,6 +22,9 @@
     "dev": {
       "githubBranchName": "develop"
     },
+    "stg": {
+      "githubBranchName": "release"
+    },
     "prod": {
       "githubBranchName": "main"
     },
