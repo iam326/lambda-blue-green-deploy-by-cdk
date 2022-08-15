@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
-import { BlueGreenSampleLambdaStack } from '../lib/blue-green-sample-lambda-stack';
 import { BlueGreenSampleApiStack } from '../lib/blue-green-sample-api-stack';
 import { BlueGreenSampleCicdStack } from '../lib/blue-green-sample-cicd-stack';
 
@@ -24,21 +23,14 @@ const commitHash = app.node.tryGetContext('commitHash');
 env.projectName = projectName;
 env.stageName = stageName;
 
-const lambdaStack = new BlueGreenSampleLambdaStack(
-  app,
-  `${stageName}-${projectName}-lambda`,
-  {
-    ...env,
-    commitHash,
-  }
-);
-new BlueGreenSampleApiStack(app, `${stageName}-${projectName}-api`, {
-  ...env,
-  lambdaAlias: lambdaStack.lambdaAlias,
-});
 new BlueGreenSampleCicdStack(app, `${stageName}-${projectName}-cicd`, {
   ...env,
   githubOwnerName,
   githubRepositoryName,
   codestarConnectionArn,
+});
+
+new BlueGreenSampleApiStack(app, `${stageName}-${projectName}-api`, {
+  ...env,
+  commitHash,
 });
