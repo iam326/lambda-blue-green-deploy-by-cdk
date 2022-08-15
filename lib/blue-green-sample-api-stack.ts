@@ -26,7 +26,7 @@ export class BlueGreenSampleApiStack extends Stack {
       this,
       'LambdaFunction',
       {
-        functionName: `${stageName}-${projectName}-func3`,
+        functionName: `${stageName}-${projectName}-lambda`,
         description: commitHash ? `Commit Hash: ${commitHash}` : '',
         runtime: lambda.Runtime.NODEJS_14_X,
         entry: path.join(__dirname, '../src/lambda/index.ts'),
