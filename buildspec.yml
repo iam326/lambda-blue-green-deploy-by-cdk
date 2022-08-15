@@ -8,4 +8,4 @@ phases:
       - yarn install
   build:
     commands:
-      - yarn deploy $STAGE_NAME-blue-green-sample-lambda -c stageName=$STAGE_NAME -c commitHash=$CODEBUILD_RESOLVED_SOURCE_VERSION --require-approval never
+      - yarn deploy $STAGE_NAME-blue-green-sample-api -c stageName=$STAGE_NAME -c commitHash=$CODEBUILD_RESOLVED_SOURCE_VERSION --require-approval never
