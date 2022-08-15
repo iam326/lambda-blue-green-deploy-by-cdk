@@ -78,13 +78,6 @@ export class BlueGreenSampleCicdStack extends Stack {
                 `arn:aws:iam::${this.account}:role/cdk-*-role-${this.account}-${this.region}`,
               ],
             }),
-            new iam.PolicyStatement({
-              effect: iam.Effect.ALLOW,
-              actions: ['lambda:*'],
-              resources: [
-                `arn:aws:lambda:${this.region}:${this.account}:function:${stageName}-${projectName}-func3`,
-              ],
-            }),
           ],
         }),
       },
