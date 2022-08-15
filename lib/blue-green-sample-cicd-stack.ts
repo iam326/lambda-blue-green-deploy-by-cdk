@@ -82,7 +82,7 @@ export class BlueGreenSampleCicdStack extends Stack {
               effect: iam.Effect.ALLOW,
               actions: ['lambda:*'],
               resources: [
-                `arn:aws:lambda:${this.region}:${this.account}:function:${stageName}-${projectName}-function`,
+                `arn:aws:lambda:${this.region}:${this.account}:function:${stageName}-${projectName}-func3`,
               ],
             }),
           ],
