@@ -1,14 +1,26 @@
-# Welcome to your CDK TypeScript project
+# lambda-blue-green-deploy-by-cdk
 
-This is a blank project for TypeScript development with CDK.
+【AWS CDK】CodePipeline で Lambda を Blue-Green デプロイする
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+## Deploy
 
-## Useful commands
+### DEV
 
-* `npm run build`   compile typescript to js
-* `npm run watch`   watch for changes and compile
-* `npm run test`    perform the jest unit tests
-* `cdk deploy`      deploy this stack to your default AWS account/region
-* `cdk diff`        compare deployed stack with current state
-* `cdk synth`       emits the synthesized CloudFormation template
+```
+$ cdk deploy dev-blue-green-sample-cicd -c stageName=dev
+$ cdk deploy dev-blue-green-sample-api -c stageName=dev
+```
+
+### STG
+
+```
+$ cdk deploy stg-blue-green-sample-cicd -c stageName=stg
+$ cdk deploy stg-blue-green-sample-api -c stageName=stg
+```
+
+### PROD
+
+```
+$ cdk deploy prod-blue-green-sample-cicd -c stageName=prod
+$ cdk deploy prod-blue-green-sample-api -c stageName=prod
+```
